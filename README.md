@@ -1,45 +1,46 @@
 # Homework 3
 
-四道题的 R、C++ 源码与图片均放在本目录；第 3 题的包在 `measError/`。
-运行时先进入本目录，不要从 `starter-code/` 启动。
+本次作业共包含四个部分，分别涉及低秩矩阵近似、高斯过程插值、测量误差回归和 OpenMP 图像卷积。使用 R 和 C++ 完成相关算法实现，并通过数值实验、结果对比和可视化检验实现效果。
 
-## 环境与安装
+## 1. Low-Rank Approximation
 
-需要 R（建议 4.3+）、支持 C++11 的编译器，以及 Rcpp、RcppEigen、RcppArmadillo、jpeg、foreach、doRNG、doParallel。第 4 题还需要 OpenMP 编译支持（macOS 默认 Apple Clang 通常不支持，须另行配置）。
+利用奇异值分解（SVD）实现矩阵低秩近似，并将其应用于图像压缩与重构。通过保留不同数量的奇异值，比较不同秩下的图像重构效果及相对误差。
 
-在 R 控制台安装依赖：
+主要文件：
+- `low-rank-approx.R`
+- `low-rank-approx.cpp`
+- `image-utils.R`
+- `low-rank-figure.pdf`
 
-```r
-install.packages(c("Rcpp", "RcppEigen", "RcppArmadillo", "jpeg",
-                   "foreach", "doRNG", "doParallel"))
-```
+## 2. Gaussian Process Interpolation
 
-在终端安装自建包，再从提交目录运行脚本：
+实现高斯过程插值，利用稀疏矩阵求解方法完成计算，并通过不同平滑参数下的实验，比较后验均值及其不确定性变化。
 
-```bash
-R CMD INSTALL measError
-Rscript low-rank-approx.R
-Rscript gp-interpolation.R
-Rscript measurement-error-simulation.R
-Rscript image-convolution-openmp.R
-```
+主要文件：
+- `gp-interpolation.R`
+- `gp-interpolation.cpp`
+- `gp-figure.pdf`
 
-包自带小测试可单独运行：`Rscript measError/tests/smoke.R`。每道题的脚本都会输出检查与指标，图像另存成 `*-figure.pdf`；这些是运行时生成文件，不需要放进提交压缩包。
+## 3. Measurement Error Regression
 
-记录本机版本（运行后将结果填进报告）：
+通过模拟实验研究测量误差对回归估计的影响，比较朴素回归与校正回归的估计效果，并进一步考察串行和并行计算的结果一致性及运行效率。
 
-```bash
-Rscript -e 'cat(R.version.string,"\n"); for(p in c("Rcpp","RcppEigen","RcppArmadillo")) cat(p, as.character(packageVersion(p)),"\n"); cat(Sys.info()[c("sysname","release","machine")],"\n")'
-R CMD config CXX11
-R CMD config CXX11FLAGS
-```
+主要文件：
+- `measurement-error-simulation.R`
+- `measError/`
+- `measurement-error-figure.pdf`
 
-## 实现与检查
+## 4. Image Convolution with OpenMP
 
-第 1 题由 Eigen 的薄 SVD 重构前 K 项并截断像素；与 R 的 `svd` 结果比较。第 2 题保留给定的稀疏矩阵求解程序和小规模稠密对照；同组观测比较两个平滑参数。第 3 题用两个独立的带噪代理变量 W、Q 模拟测量误差：朴素回归为 Y 对 W 的最小二乘，校正回归以 Q 为 W 的工具变量；doRNG 给串行、并行分配相同任务级随机流。第 4 题用 OpenMP 对输出列并行，每个像素由一个线程写入，与串行版本逐像素比较。
+使用 C++ 和 OpenMP 实现图像卷积的并行计算，完成高斯平滑、图像锐化和边缘检测等操作。通过比较串行与并行计算结果，检验计算正确性，并分析不同线程数量下的运行时间和加速效果。
 
-第 3 题的具体模型与函数接口按本包帮助页 `?getData` 定义；如果课堂提供了不同的 `measError` 原始源码，应以课件版接口为准再调整。 
+主要文件：
+- `image-convolution-openmp.R`
+- `image-convolution-openmp.cpp`
+- `image-utils.R`
+- `assets/`
+- `convolution-figure.pdf`
 
-## AI 工具说明
+## AI Tool Usage
 
-本次使用 ChatGPT 辅助完成第 1、3、4 题的代码与实验脚本，以及第 2 题的说明和报告草稿。第 1、2、4 题以老师给的 starter code 为基础。最终提交前应在本机运行全部测试、核对数字与图像，并如实填写 `report.pdf` 的结果、版本、计时；未运行的结果不能写成已经验证。
+在作业完成过程中，使用 ChatGPT 辅助进行部分代码理解、问题排查和文档整理。代码均经过实际运行，并对实验输出结果进行了检查。
