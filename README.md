@@ -70,7 +70,7 @@ homework-03-2026001406/
 - R：4.6.1
 - Rcpp：1.1.2
 - RcppEigen：0.3.4.0.2
-- RcppArmadillo：[填写实际版本]
+- RcppArmadillo：15.6.2.1
 - 编译器：GCC 13.3.0
 - 并行环境：R 多进程并行和 OpenMP
 - 其他 R 包：`jpeg`、`foreach`、`doRNG`、`doParallel`
