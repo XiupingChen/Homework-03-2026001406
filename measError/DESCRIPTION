@@ -1,0 +1,13 @@
+Package: measError
+Type: Package
+Title: Simple Measurement Error Regression Simulation
+Version: 0.1.0
+Authors@R: person("Xiuping", "Chen", role = c("aut", "cre"), email = "xiuping@example.invalid")
+Description: Simulates two independent noisy measurements of a latent covariate
+    and estimates the slope by ordinary least squares or instrumental variables.
+License: GPL-3
+Encoding: UTF-8
+Imports: Rcpp
+LinkingTo: Rcpp
+SystemRequirements: C++11
+NeedsCompilation: yes

@@ -1,0 +1,5 @@
+useDynLib(measError, .registration = TRUE)
+importFrom(Rcpp, evalCpp)
+export(getData)
+export(naiveRegression)
+export(correctedRegression)
